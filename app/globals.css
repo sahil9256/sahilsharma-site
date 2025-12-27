@@ -1,30 +1,68 @@
 @import "tailwindcss";
 
-html {
-  scroll-behavior: smooth;
-}
-
 :root {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
-}
+  --bg: #f8fafc;          /* very light grey, not white */
+  --fg: #0f172a;          /* slate-900 */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --accent: #2563eb;      /* steel blue */
+  --accent-soft: rgba(37, 99, 235, 0.12);
+
+  --card: rgba(255, 255, 255, 0.85);
+  --border: rgba(15, 23, 42, 0.08);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --bg: #020617;        /* almost black */
+    --fg: #e5e7eb;
+
+    --card: rgba(255, 255, 255, 0.06);
+    --border: rgba(255, 255, 255, 0.12);
   }
 }
 
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  height: 100%;
+}
+
+body {
+  background: #ffffff; /* remove grey feeling */
+  color: rgb(15 23 42); /* slate-900 */
+  font-family: var(--font-geist-sans), system-ui, -apple-system, Segoe UI, Roboto,
+    Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+/* smoother anchors like #about */
+html {
+  scroll-behavior: smooth;
+}
+
+/* optional: nicer text selection */
+::selection {
+  background: rgba(16, 185, 129, 0.25); /* emerald */
+}
+
+
+/* selection */
+::selection {
+  background: rgba(37, 99, 235, 0.25);
+}
+
+/* prose polish */
+.prose img {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+}
+
+.prose pre {
+  border-radius: 14px;
+  border: 1px solid var(--border);
+}
+
+/* TEMP DEBUG - should remove any purple background */
+body {
+  background: #f1f5f9 !important; /* slate-100 */
 }

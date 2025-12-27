@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getAllThoughtsMeta, getThoughtBySlug } from "@/lib/thoughts";
 import { remark } from "remark";
 import html from "remark-html";
+import { getAllPortfolioMeta, getPortfolioBySlug } from "@/lib/portfolio-md";
 
 export function generateStaticParams() {
-  return getAllThoughtsMeta().map((p) => ({ slug: p.slug }));
+  return getAllPortfolioMeta().map((p) => ({ slug: p.slug }));
 }
 
-export default async function ThoughtPostPage({
+export default async function PortfolioDetailPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
@@ -17,33 +17,50 @@ export default async function ThoughtPostPage({
 
   if (!slug) return notFound();
 
-  let post;
+  let data;
   try {
-    post = getThoughtBySlug(slug);
+    data = getPortfolioBySlug(slug);
   } catch {
     return notFound();
   }
 
-  const processed = await remark().use(html).process(post.content);
+  const processed = await remark().use(html).process(data.content);
   const contentHtml = processed.toString();
 
   return (
     <main className="mx-auto max-w-[980px] px-5 py-14">
       <Link
-        href="/thoughts"
+        href="/portfolio"
         className="text-sm text-black/70 hover:text-black underline underline-offset-4"
       >
-        ← Back to Thoughts
+        ← Back to Portfolio
       </Link>
 
       <header className="mt-8">
-        <div className="text-xs text-black/60">{post.meta.date}</div>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="text-xs text-black/60">{data.meta.date}</div>
+          <div className="text-xs text-black/60">{data.meta.note}</div>
+        </div>
+
         <h1 className="mt-2 text-3xl font-semibold tracking-tight">
-          {post.meta.title}
+          {data.meta.title}
         </h1>
         <p className="mt-3 max-w-[850px] text-black/80 leading-relaxed">
-          {post.meta.summary}
+          {data.meta.summary}
         </p>
+
+        {data.meta.stack?.length ? (
+          <div className="mt-5 flex flex-wrap gap-2">
+            {data.meta.stack.map((s) => (
+              <span
+                key={s}
+                className="rounded-full border border-black/10 bg-white px-3 py-1 text-xs text-black/70"
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+        ) : null}
       </header>
 
       <article
